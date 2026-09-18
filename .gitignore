@@ -1,0 +1,53 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Environment variables / secrets
+.env
+.env.*
+!.env.example
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# AI / ML model files
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+
+# Generated files
+outputs/
+results/
+temp/
+tmp/
+
+# Node.js
+node_modules/
+
+# Build files
+dist/
+build/
+.next/
+
+# Local databases
+*.db
+*.sqlite
+*.sqlite3
