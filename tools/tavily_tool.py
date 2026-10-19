@@ -16,7 +16,7 @@ def tavily_search(query):
         max_results=5
 
     )
-    results = [ ]()
+    results = [ ]
 
     for i,r in enumerate(response["results"],1):
         title =r.get("title","Unknown")
