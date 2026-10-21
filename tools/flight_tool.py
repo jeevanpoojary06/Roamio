@@ -1,6 +1,7 @@
 import os 
 import re
 import certifi
+import requests
 import airportsdata
 import pycountry
 from dotenv import load_dotenv
@@ -246,3 +247,67 @@ def resolve_location_to_iata(location: str):
         return city_matches[0][1]
 
     return None
+
+def find_location_mentions(query:str):
+    """
+    this function finds country or city names inside a natural language query
+    """
+
+    q = query.lower()
+    mentions = []
+
+    for alias in COUNTRY_ALIASES:
+        if re.search(rf"\b{re.escape(alias)}\b",q):
+            mentions.append(alias)
+
+    for country in pycountry.countries:
+        name = country.name.lower()
+        if len(name) >= 4 and re.search(rf"\b{re.escape(name)}\b",q):
+            mentions.append(name)
+
+    for city in CITY_MAIN_AIRPORT:
+        if re.search(rf"\b{re.escape(city)}\b",q):
+            mentions.append(city)
+
+    unique_mentions =[]
+    for item in mentions:
+        if item not in unique_mentions:
+            unique_mentions.append(item)
+
+    return unique_mentions
+
+def parse_route(query:str):
+    """
+    Returns:
+    dep_iata, arr_iata
+
+    Can return:
+    None, None  -> global live flights
+    DAC, NRT    -> filtered route
+    DAC, None   -> all flights from DAC
+    None, NRT   -> all flights to NRT
+    """
+
+    q = query.strip()
+    q_lower = q.lower()
+
+    global_keywords = [
+        "all country",
+        "all countries",
+        "global flight",
+        "global flights",
+        "all flight",
+        "all flights",
+        "worldwide flight",
+        "worldwide flights",
+    ]
+
+    if any(keyword in q_lower for keyword in global_keywords):
+        return None,None
+
+    codes = re.findall(r"\b[A-Z]{3}\b",q)
+
+    if len(codes) >=2:
+        dep =codes[0].upper()
+        arr=codes[1].upper()
+        return dep,arr
