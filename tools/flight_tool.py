@@ -404,7 +404,7 @@ Departure:
 - IATA: {dep_iata}
 - Terminal: {dep_terminal}
 - Gate: {dep_gate}
-- Scheduled: {dep_scheduled}
+- Scheduled: {dep_sheduled}
 - Delay: {dep_delay_text}
 
 Arrival:
@@ -479,7 +479,7 @@ def search_flights(query:str,limit:int=10):
     elif arr_iata:
         route_info = f"Live flights to {arr_iata}"
 
-    formatted_flights = [format_flight(flight) for flight in flight_data[:limit]]
+    formatted_flights = [format_flights(flight) for flight in flight_data[:limit]]
 
     return f"{route_info}\n\n" + "\n\n---\n\n".join(formatted_flights)
 
